@@ -1,0 +1,212 @@
+
+*bccalc.txt*                 BC Calculator           Last Change: 16-Oct-2006.
+
+BC Calculator						     *bccalc* *BcCalc*
+
+これは外部プログラム 'bc' を Vim 上で使えるようにする為のプラグインです。
+Vim 上で複雑な計算が簡単にできるようになります。
+
+|bccalc-usage|               使い方
+|bccalc-feature|             特徴
+|bccalc-requirements|	     必要条件
+|bccalc-install|	     インストール
+|bccalc-customization|	     カスタマイズ
+|bccalc-history|	     履歴
+
+Version: 1.9
+
+Aurthor: Scott Urbans
+Modified by: T.Katsuyama
+
+==============================================================================
+■使い方						       *bccalc-usage*
+
+計算したい数式を Vim 上で書き、それを Shift-V や CTRL-V で選択し、次のように
+タイプする。
+>
+	;bc
+<	または >
+	:BcCalc
+<
+答えは、'=' が選択範囲の最後にあれば、その右側に表示される。ない場合は、ウィンド
+ウ下端のステータス行に表示される。
+
+例: >
+	100 + 200 = 
+<	と入力して行選択し、 >
+	;bc
+<	とタイプすると以下になる。 >
+	100 + 200 = 300
+<
+カレント行に対しては範囲選択は不要で. ノーマルモードで ';bc' か ':BcCalc'と
+タイプするだけで良い。
+
+コマンドラインにおいては、以下のようにタイプする。
+	:Calculate 'equation'
+
+例: >
+	:Calculate 100+200
+<	Enter-key >
+	:100+200=300
+<
+===============================================================================
+■特徴 						      *bccalc-feature*
+
+○ Unix 上でも MS-Windows 上でも動く(はず)
+    Linux, Solalis-2.6, windows2000, windowsXP で動作確認済み。
+
+○ いろんな計算ができる
+>
+  '+', '-'. '*', '/', '%', '^'. sqrt(), sin(), cos(), atan(), ln(), log(), 
+  exp()
+<
+  などの演算子、関数が使える。
+
+○ 16進数、8進数、2進数の演算ができる
+  'obase=xx; ibase=xx;' の式を選択範囲に含ませることにより、 16進数、8進数、2進数
+  の演算ができる。('xx' は基数)
+
+  16進数の計算例: >
+	obase=16; ibase=16;
+	A000 + 1000 =
+<     範囲選択をし、 >
+	:BcCalc
+	A000 + 1000 =B000
+<
+    Note: 'obase=xx;' の式は 'ibase=xx;' の式よりも前にすること。
+
+   'ibase=16;'の式が入力文字列にあれば、0xA000 というような 0x を伴う 16
+   進数の表現も可能。
+
+○ 16進数計算において小文字を使うことが可能
+    'ibase=16' の式が入力文字列中にあれば、16進数部を大文字に自動変換する。
+    ('bc'プログラムは 小文字の16進数の計算ができない)
+    Note: '=' の前後にスペースがあっても OK。
+
+○ 計算範囲内にコメントの記述が可能
+    '#' から行末までと '/*' から '*/' の範囲をコメントとする。
+
+○ 余りの計算が可能
+    余りの演算子である '%' が式中にあれば、"scale=0;" の式を自動的に挿入する。
+    それにより、期待する値が得られる。
+    (これは 'bc' プログラムに '-l' オプションを付けで実行すると scale=20 が
+    default となり、期待する答えが得られないことへの対策)
+
+○ 答えに 3桁毎のカンマの挿入が可能
+    詳細は右を。 |bccalc_output_comma|
+
+○ 答えの小数点以下の桁数の設定が可能
+    計算精度を変えずに、答えの小数点以下の桁数の設定が可能。
+    詳細は右を。 |bccalc_output_decimals|
+
+○任意の関数の定義が可能
+   例: >
+	define rad (x) {
+	    return (x / 180) * 4 * atan (1)
+	}
+	cos (rad (45)) =
+
+<	範囲選択し >
+	;bc
+<	とすると以下の結果となる。 >
+	cos (rad (45)) = 0.707
+<
+○ 式を'='でつなげることが可能
+   例:
+      まず以下の計算をする >
+	2 + 3 =
+	;bc
+	2 + 3 = 5
+
+<     その計算結果に式を追加する: >
+	2 + 3 = 5 * 2 =
+	;bc
+	2 + 3 = 5 * 2 = 10
+<
+    Note: 以前入力した '=' の左側の式の再計算は行わない。
+
+○ 全角文字の入力と出力が可能
+    詳細は右を。 |g:bccalc_input_allow_zenkaku|, |g:bccalc_output_zenkaku|
+
+
+==============================================================================
+■ 必要条件						 *bccalc-requirements*
+
+○ Vim 7.0 かそれ以降のバージョン
+
+○'bc' という外部プログラム
+   ほとんどの unix OS に標準に備えられている外部プログラムを利用する。
+   MS-Windows では、'cygwin' か 'UnxUtils' に同梱されているものが使用可能であ
+   る。
+
+==============================================================================
+■ インストール						      *bccalc-install*
+
+ダウンロードしたファイルを展開すると以下のファイルができる。
+>
+    bccalc.vim   --- スクリプト本体
+    bccalc.txt   --- 英語のヘルプ
+    bccalc_sjis.txt --- SJIS の日本語ヘルプ
+<
+bccalc.vim を '$HOME/vim/plugin' にコピーする。
+bccalc.txt を '$HOME/.vim/doc' に コピーし、Vim 上で以下のコマンドを実行する。
+    >
+    :helptags ~/.vim/doc
+<
+    日本語 MS-Windows の場合、 bccalc_sjis.txt を '$HOME/vimfiles/doc'コピーす
+    る。 Unix で日本語ヘルプを使う場合は、bccalc_sjis.txt を Locale に合わせ変
+    換する。 linux で euc-jp への変換例：>
+    >
+	$ nkf -e bccalc_sjis.txt > bccalc.txt
+<
+※ Windows の場合は、$HOME/.vim を $HOME/vimfiles と読み換えてください。
+
+'bc' がインストールされていければインストールする。
+その際、'bc'が置かれた場所は 環境変数 Path に設定する必要がある。
+
+==============================================================================
+■ 設定						        *bccalc-customization*
+
+'bccalc' の動作は '.vimrc' or '.gvimrc' (windows では'_vimrc', '_gvimrc')
+によって、個人用の設定ができる。
+
+※ Windows の場合は、'.vimrc', '.gvimrc を _vimrc', '_gvimrc' と読み換えてく
+ださい。
+
+						       *g:bccalc_output_comma*
+○ 答えの 3桁毎にカンマを挿入 >
+  let g:bccalc_output_comma=1  (Default)
+<
+							    *g:bccalc_bc_prog*
+○ 'bc' プログラムを変更する >
+  let g:bccalc_bc_prog='program path' (default = 'bc')
+<
+○ 答えの小数点以下の桁数を変更する >
+  let g:bccalc_output_decimals  (Default 3)
+<  
+						*g:bccalc_input_allow_zenkaku*
+○ 全角文字の入力を許す >
+  let g:bccalc_input_allow_zenkaku=1 (Default 0)
+<
+  これが 1 にセットされていれば、全角文字の入力が可能。半角文字との混在も可 
+  能。
+    Note: これを行うには Kaoriya.net で配布されている gvim に同梱されている
+    'hz_ja.vim' が必要。
+
+						     *g:bccalc_output_zenkaku*
+○ 全角文字による答えの出力 >
+  let bccalc_output_zenkaku = 1   (Default 0)
+<
+    Note: これを行うには 同様に 'hz_ja.vim' が必要。
+
+==============================================================================
+HISTORY							      *bccalc-history*
+
+Ver.	Date		Contents
+1.9	13-Oct-2006	○幾つかのバグ修正と改善を実施。
+			○Help ファイルの作成。
+			(by T.Katsuyama)
+1.8	28-Oct-2005     ○オリジナル作者 Mr scott urbans 氏の最後のリリース。
+
+===============================================================================
+vim:tw=78:noet:wrap:ts=8:ft=help:norl:

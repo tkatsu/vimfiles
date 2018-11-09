@@ -1,0 +1,115 @@
+[[plugins]]
+repo = 'Shougo/dein.vim'
+
+[[plugins]]
+repo = 'Shougo/vimproc.vim'
+hook_post_update = '''
+  if dein#util#_is_windows()
+    let cmd = 'tools\\update-dll-mingw'
+	elseif dein#util#_is_cygwin()
+    let cmd = 'make -f make_cygwin.mak'
+  elseif executable('gmake')
+    let cmd = 'gmake'
+  else
+    let cmd = 'make'
+  endif
+  let g:dein#plugin.build = cmd
+'''
+ 
+[[plugins]]
+repo = 'Shougo/neomru.vim'
+ 
+[[plugins]]
+repo = 'Shougo/neoyank.vim'
+
+[[plugins]]
+repo = 'Shougo/unite.vim'
+depends = ['neomru.vim', 'neoyank.vim']
+hook_add = '''
+  let g:unite_source_file_mru_limit = 200
+  " grep プログラムとして使うプログラムを指定。
+	if executable('pt')
+	  " Use pt (the platinum searcher)
+	  " https://github.com/monochromegane/the_platinum_searcher
+	  let g:unite_source_grep_command = 'pt'
+	  let g:unite_source_grep_default_opts = '--nogroup --nocolor'
+	  let g:unite_source_grep_recursive_opt = ''
+    let g:unite_source_grep_encoding = 'utf-8'
+	elseif executable('grep')
+    let g:unite_source_grep_encoding = 'utf-8'
+  endif
+  "let g:unite_source_find_command = 'find'
+  "let g:unite_source_find_default_opts = ''
+  nnoremap <silent> ,uy :<C-u>Unite history/yank<CR>
+  nnoremap <silent> ,ub :<C-u>Unite buffer<CR>
+  nnoremap <silent> ,uf :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
+  nnoremap <silent> ,ur :<C-u>Unite -buffer-name=register register<CR>
+  nnoremap <silent> ,uu :<C-u>Unite file_mru buffer<CR>
+'''
+
+[[plugins]]
+repo = 'tpope/vim-surround'
+hook_add = '''
+  let g:surround_{char2nr("「")} = "「\r」"
+  let g:surround_{char2nr("『")} = "『\r』"
+  let g:surround_{char2nr("【")} = "【\r】"
+  let g:surround_{char2nr("（")} = "（\r）"
+  let g:surround_{char2nr("e")} = " **\r** "
+  let g:surround_{char2nr("s")} = "#{\r}"
+'''
+
+[[plugins]]
+repo = 'flazz/vim-colorschemes'
+if = 0
+
+[[plugins]]
+repo = 'vim-ruby/vim-ruby'
+on_ft = ['ruby']
+
+[[plugins]] # カーソル位置のコンテキストに合わせてftを切り替える
+repo = 'osyo-manga/vim-precious'
+depends = ['context_filetype.vim']
+
+[[plugins]] # カーソル位置のコンテキストのftを判定するライブラリ
+repo = 'Shougo/context_filetype.vim'
+
+[[plugins]]
+repo = 'cespare/vim-toml'
+on_ft = 'toml'
+
+[[plugins]]
+repo = 'aklt/plantuml-syntax'
+on_ft = 'plantuml'
+
+[[plugins]]
+repo = 'Shougo/neosnippet-snippets'
+
+[[plugins]]
+repo = 'ujihisa/neco-look'
+
+[[plugins]]
+repo = 'kana/vim-operator-user'
+
+[[plugins]]
+# インデントの深さを、色を付けて分り易くする
+repo = 'nathanaelkane/vim-indent-guides'
+hook_add = '''
+  " vimを立ち上げたときに、自動的にvim-indent-guidesをオンにする
+  let g:indent_guides_enable_on_vim_startup = 0
+  " ガイドをスタートするインデントの量
+  let g:indent_guides_start_level=2
+  " 自動カラーを無効にする
+  let g:indent_guides_auto_colors=0
+  " 奇数インデントのカラー
+  autocmd VimEnter,Colorscheme * :highlight IndentGuidesOdd guibg=grey70
+  " 偶数インデントのカラー
+  autocmd VimEnter,Colorscheme * :highlight IndentGuidesEven guibg=grey85
+  " ハイライト色の変化の幅
+  let g:indent_guides_color_change_percent = 30
+  " ガイドの幅
+  let g:indent_guides_guide_size = 1
+'''
+
+[[plugins]]
+repo = 'tkatsu/git-vim'
+

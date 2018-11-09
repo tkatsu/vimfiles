@@ -1,0 +1,13 @@
+                           タイトル(変更後:center)
+							日付(変更後:right)
+							名前(変更後:right)
+■概要など
+
+■大項目
+  ◎中項目
+    ○小項目
+
+■
+
+以上
+				      vi:set ts=8 sts=2 sw=2 tw=78 et ft=memo:
