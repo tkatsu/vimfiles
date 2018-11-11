@@ -1,0 +1,12 @@
+/dein/*
+!/dein/repos
+/dein/repos/*
+!/dein/repos/.gitkeep
+*~
+*.swp
+*.log
+*.orig
+*[_.]BACKUP[_.]*
+*[_.]BASE[_.]*
+*[_.]LOCAL[_.]*
+*[_.]REMOTE[_.]*
