@@ -67,27 +67,28 @@ vimfiles for Linux and Windows using dein plugin manager.
 
 # 対応 Vim
   `Lua付き` でビルドされた Vim の利用を推奨する。(:version にて確認)  
-  `Lua付き` でビルドされていないものは、便利な補完機能関係のプラグインが効かない。
+  Lua付きでビルドされていないものは、便利な補完機能関係のプラグインが効かない。
 
  - Windows  
    - [香り屋さんで配布している Vim](https://www.kaoriya.net/software/vim/)
    - `Git For Windows`  に同梱されている Vim
-     (ただし、Luaを必要するものや、vimproc.vim を利用するプラグインには非対応)
+     (ただし、Luaを必要とするものや、vimproc.vim を利用するプラグインには非対応)
 
  - Linux  
    パッケージに含まれる Vim。  
    尚、パッケージ版だと `Luaなし`でビルドされている場合が多いので、
-   その際は自分で `Lua付き`の Vim を [ここ](https://qiita.com/Fendo181/items/8a5545cd7550bd9a3c91)を
-   参考にビルドするのが良い。
+   その際は自分で `Lua付き`の Vim を [ここ](https://qiita.com/Fendo181/items/8a5545cd7550bd9a3c91)や
+   [ここ](https://qiita.com/SS1031/items/7ee4feb7a18c62bd926f) を参考にビルドするのが良い。
 
 # Vim 以外に必要なもの
  - Git  
    Windows の場合は、`Git Bash` がセットになってる `Git for Windows`
 
- - ビルドツール
-   - Windows(多少面倒なのでオプショナル)  
-    プラグイン `vimproc.vim` を利用する際、バイナリをビルドする必要があるので、
-     `MinGW` をあらかじめインストールしておく。  
+ - ビルドツール  
+   プラグイン `vimproc.vim` の DLL を自分でビルドする場合に必要となる。
+
+   - Windows(通常は不要。後述する kaoriya の DLL を利用するので)  
+     `MinGW` をインストールする。
 
       - 32bit 版 Windows の場合  
         http://yohshiy.blog.fc2.com/blog-entry-292.html を参考にインストールする。
@@ -105,10 +106,10 @@ vimfiles for Linux and Windows using dein plugin manager.
 
         bc, ctags, indent, look, words, pt
 
-   Linux では、ほとんどがインストール済みと思われる。インストールされていなかったら
-   `apt install` などでインストールする。  
+   これらは、なくても、そのツールを利用するプラグインが動作しないだけで、とり敢えず問題はない。  
 
-   これらは、とり敢えずなくても、そのツールを利用するプラグインが動作しないだけで問題はない。  
+   Linux ではほとんどがインストール済みと思われる。インストールされていなかったら
+   `sudo apt install xxx` などでインストールする。  
 
    Windows においては、Windows 用バイナリをネットで探し、パスの通ったディレクトリに保存する。  
 
@@ -118,115 +119,123 @@ vimfiles for Linux and Windows using dein plugin manager.
      https://github.com/universal-ctags/ctags-win32/releases
    - indent  
      http://gnuwin32.sourceforge.net/packages/indent.htm
-   - look(neco-lookで 英単語の補完に利用)  
-     バイナリの場所は失念。手元の look.exe でバージョン表示すると `look from util-linux 2.23`  と表示。
-   - words(look で利用する英単語を集めたファイル)  
-     Ubuntu などでインストールされる wamerican パッケージの /usr/share/dict/words  を
-     流用すればよいかも？)  
-     look.exe と同じ場所に保存する。
+   - look  
+     neco-lookで 英単語の補完に利用する。  
+     Windows 用バイナリ look.exe は [ここ](https://gist.github.com/DeaR/5898758)を
+     参考にビルドする。ビルドには MinGW  が必要。
+   - words  
+     上記 look で利用する **1行1単語の英単語データファイル**。  
+     適当なものがなければ Ubuntu の /usr/share/dict/american-english を
+     `sort -d` でソートしたものを words というファイル名にして利用するという
+     方法がある。  look.exe と同じ場所に保存する。
    - pt(grepツール)  
 	    https://github.com/monochromegane/the_platinum_searcher  
       日本語対応がしっかりしているので Windows ではこれが良い。
 
-
-# インストール手順
+# vimfiles と各プラグインのインストール手順
   1. 自分のホームディレクトリに `vimfiles.git` を `git clone` する。  
     (Linux の場合は `.vim`  という名称で clone する)
   2. clone された中に含まれる `_vimrc` と `_gvimrc` をホームディレクトリ直下にコピーする。  
     (Linux の場合は それぞれ `.vimrc` `.gvimrc` という名称でコピーする。)
-  3. Vim を起動する。必要なプラグインが自動的にインストールされる。  
-     尚、2～3回、Vim の終了起動を繰替えす必要がある。
-  4. プラグイン vimproc.vim の DLL のビルドまたはコピー(オプショナル)  
+  3. Vim を起動する。  
+    必要なプラグインが自動的にインストールされる。  
+    尚、2～3回、Vim の起動・終了を繰替えす必要がある。
+  4. プラグイン vimproc.vim の DLL のコピー(Linuxの場合はビルド)  
      一部のプラグイン、Unite, clang, previmとopen-browser 等で必要  
   5. ターミナルから Vim を起動する場合は ターミナル自体の配色を`背景が薄いクリーム色`になるよう調整する。
 
  - Windows の GVim 用のインストール例  
-   1. Git Bash 上で以下を実行する。
+   Git Bash 上で以下を実行する。  
+
+   1. 既存ファイルのバックアップ  
+     vimfiles フォルダ や _vimrc, _gvimrc ファイルが既にあればリネームし、バッ
+     クアップしておく。
+      ```
+      $ cd ~
+      $ mv vimfiles vimfiles.old 
+      $ mv _vimrc _vimrc.old
+      $ mv _gvimrc _gvimrc.old
+      ```
+
+   2. vimfiles の cloneと、_vimrc と _gvimrc のコピー
       ```
       $ cd ~
       $ git clone https://github.com/tkatsu/vimfiles.git
-      ```
-      ※  vimfiles フォルダが既にあればリネームし、バックアップしておく。
-
-   2. Git Bash 上で以下を実行する。
-      ```
       $ cp vimfiles/_vimrc _vimrc
       $ cp vimfiles/_gvimrc _gvimrc
       ```
-      ※  _vimrc, _gvimrc が既にあればリネームし、バックアップしておく。
 
-   3. タスクバーなどから GVim を起動する。(終了・起動を2・3回繰返す)
+   3. タスクバーなどから GVim を起動する。  
+     最初の GVim の起動に3～4分かかる場合がある。その際、何の表示もされないがじっくり
+    と待つ。GVim の再起動を2～3回繰替えし、GVim が スッと立ち上がればイン
+    ストールが完了。
 
-   4. vimproc.vim の DLL(vimproc_win64.dll)のビルドまたはコピー
-     - ビルド **しない** 場合
-       [vimproc.vim プラグインの開発者 Shougoさんの URL](https://github.com/Shougo/vimproc.vim/releases) から
-         `vimproc_winXX.dll` をダウンロードし、
-       `~/vimfiles/dein/.cache/_vimrc/.dein/lib` にコピーする。  
-       ※ XX の部分は OS のビット数 32 か 64 を表わす。
+   4. vimproc.vim の DLLのコピー  
+     kaoriya で配布している Vim には vimprocのDLLも同梱されているので、それを所定の
+     場所にコピーする。  
 
-     - ビルド **する** 場合、以下を実行する。  
-       Power Shell にて以下を実行する。
-   
-       ```
-       $ cd ~\vimfiles\dein\repos\github.com\Shougo\vimproc.vim
-       $ .\tools\update-dll-mingw.bat
-       $ cp lib\vimproc_winXX.dll ~\vimfiles\dein\.cache\_vimrc\.dein\lib\
-      
-       ```
-       尚、vimproc-vim のヘルプやネット上の情報に、Vim 上で以下を行えば良いように書かれているが、
-       うまく行く場合と行かない場合がある。
+      ```
+      $ cp /c/vim/plugins/vimproc/lib/vimproc_winXX.dll ~/vimfiles/dein/.cache/_vimrc/.dein/lib
+      ```
+      ※ XX の部分は OS のビット数 32 か 64 を表わす。
 
-        `:call dein#update('vimproc.vim')` または `:call dein#add('Shougo/vimproc.vim', {'build' : 'make'})`  
+ - Git for Windows 付属の Vim 用のインストール例  
+   Git Bash 上で以下を実行する。  
+   ※ フォルダ名、ファイルの先頭の `_`と `.` の違いに注意!
 
- - Windows の Git for Windows 付属の Vim 用のインストール例  
-   1. Git Bash 上で以下を実行する。
+   1. 既存ファイルのバックアップ  
+     .vim フォルダ や .vimrc ファイルが既にあればリネームし、バックアップし
+     ておく。
+      ```
+      $ cd ~
+      $ mv .vim .vim.old 
+      $ mv .vimrc .vimrc.old
+      ```
+
+   2. vimfiles の clone と .vimrc のコピー
       ```
       $ cd ~
       $ git clone https://github.com/tkatsu/vimfiles.git .vim
+      $ cp .vim/_vimrc .vimrc
+      $ vim
       ```
-      ※  .vimフォルダが既にあればリネームし、バックアップしておく。
+      ※ vim の起動・終了をを2・3回繰返す。
 
-   1. Git Bash 上で以下を実行する。
-      ```
-      $ cp vimfiles/_vimrc .vimrc
-      ```
-      ※  .vimrc が既にあればリネームし、バックアップしておく。
-
-   1. Git Bash 上で vim を起動する。(終了・起動を2・3回繰返す)
-
-   ※ vimfils _vimrc を GVim と共用させることも可能だが、Linux 風の名称にして、独立させた方が無難。  
-   ※ vimproc.vim の DLL(vimproc_cygwin.dll) のビルド環境がない為、 vimproc.vim を利用するプラグインには非対応。  
+   ※ vimfiles と _vimrc を GVim と共用させることも可能だが、Linux 流の名称(.vim, .vimrc)にして、
+      独立させた方が無難。  
+   ※ vimproc.vim の DLL(vimproc_cygwin.dll) がない為、 vimproc.vim を利用するプラグインには
+      非対応。  
 
  - Linux でのインストール例
-   1. コマンドラインで以下を実行する。
+   コマンドラインで以下を実行する。  
+
+   1. 既存ファイルのバックアップ  
+     .vim フォルダ や .vimrc, .gvimrc ファイルが既にあればリネームし、
+     バックアップしておく。
       ```
       $ cd ~
+      $ mv .vim .vim.old 
+      $ mv .vimrc .vimrc.old
+      $ mv .gvimrc .gvimrc.old
+      ```
+
+   2. vimfiles の cloneと .vimrc と .gvimrc のコピー
+      ```
       $ git clone https://github.com/tkatsu/vimfiles.git .vim
+      $ cp .vim/_vimrc .vimrc
+      $ cp .vim/_gvimrc .gvimrc
+      $ vim
       ```
-      ※  .vimフォルダが既にあればリネームし、バックアップしておく。
+      ※ vim の起動・終了をを2・3回繰返す。
 
-   2. コマンドラインで以下を実行する。
+   3. vimproc.vim の DLL(vimproc_linux64.so)のビルド  
+      Vim 上で以下を実行する。
       ```
-      $ cp vimfiles/_vimrc .vimrc
-      $ cp vimfiles/_gvimrc .gvimrc
+      :VimProcInstall
       ```
-      ※  .vimrc, .gvimrc が既にあればリネームし、バックアップしておく。
+      ※ `~/.vim/dein/.cache/.vimrc/.dein/lib/` に `vimproc_linux64.so` が作られる。
 
-   3. vim を起動する。(終了・起動を2・3回繰返す)
-
-   4. vimproc.vim の DLL(vimproc_linux64.so)のビルド  
-      コマンドラインで以下を実行する。
-      ```
-      $ cd ~/.vim/dein/repos/github.com/Shougo/vimproc.vim
-      $ make
-      $ cp lib/vimproc_linux64.dll ~/.vim/dein/.cache/.vimrc/.dein/lib/
-      ```
-     
-      ※ `:call dein#update('vimproc.vim')` または
-       `:call dein#add('Shougo/vimproc.vim', {'build' : 'make'})` 
-       の方法もあるが、Windows の時と同様に上手く行かな場合がある。
-
-   5. kaoriyaさんの便利なプラグインと日本語対応ヘルプを使う(オプショナル)
+   4. kaoriyaさんの便利なプラグインと日本語ヘルプを使う(オプショナル)
       ```
       $ sudo mkdir -p /opt
       $ cd /opt
@@ -240,7 +249,7 @@ vimfiles for Linux and Windows using dein plugin manager.
 # カスタマイズの例
   ※ ファイル名、ディレクトリ名は Windows 版で説明。Linux の場合は適宜読み変える。  
 
-  - プラグインマネージャー dein を無効する  
+  - プラグインマネージャー dein を無効にする  
     `~/_vimrc` の中の以下の行の  '1' を '0' にする。
 
     ```
@@ -252,6 +261,7 @@ vimfiles for Linux and Windows using dein plugin manager.
     ```
     if = ''' 0 && dein#tap('neocomplete.vim') '''
     ```
+    別途 LLVM のインストールが必要。
 
   - プラグインを追加する  
     `~/vimfiles/rc` の中の以下の設定ファイルに記述する。
