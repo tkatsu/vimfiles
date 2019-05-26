@@ -191,8 +191,8 @@ hook_source = '''
       let g:clang_exec = 'clang'
   endif
 
-  let g:clang_c_options = '-std=c11'
-  let g:clang_cpp_options = '-std=c++11 -stdlib=libc++'
+  let g:clang_c_options = '-std=gnu11'
+  let g:clang_cpp_options = '-std=c++0x'
   let g:clang_debug = 0
 
   " }}}
@@ -219,10 +219,10 @@ hook_source = '''
     let g:clang_check_syntax_auto=1
     let g:syntastic_cpp_compiler='clang++'
     let g:syntastic_c_compiler='clang'
-    let g:syntastic_cpp_compiler_options = '--std=c++11 --stdlib=libc++'
+    let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libc++'
     let g:syntastic_cpp_check_header=0
-    "let g:syntastic_cpp_checkers=['clang_check', 'cppcheck']
-    "let g:syntastic_c_checkers=['clang_check', 'cppcheck']
+    let g:syntastic_cpp_checkers=['clang_check', 'cppcheck']
+    let g:syntastic_c_checkers=['clang_check', 'cppcheck']
     let g:syntastic_cpp_checkers=['cppcheck']
     let g:syntastic_c_checkers=['cppcheck']
     let g:syntastic_debug=0
@@ -235,7 +235,7 @@ hook_source = '''
     let g:syntastic_auto_loc_list = 0
     "let g:syntastic_check_on_open = 1
     let g:syntastic_check_on_wq = 0
-    autocmd BufWinEnter,BufWritePost *.cpp,*.c SyntasticCheck
+    "autocmd BufWinEnter,BufWritePost *.cpp,*.c SyntasticCheck
   end
 '''
 
@@ -285,15 +285,6 @@ repo = 'SirVer/ultisnips'
 if = ''' has('python') '''
 
 [[plugins]]
-repo = 'vim-scripts/Conque-GDB'
+repo = 'wordijp/NeoDebug'
 on_ft = ['c', 'cpp']
-if = 1
-hook_source = '''
-  let g:ConqueTerm_Color = 2 
-  let g:ConqueTerm_CloseOnEnd = 1
-  let g:ConqueTerm_StartMessages = 0
-  if g:uname =~? 'WINDOWS' || g:uname =~? 'MINGW'
-    let g:ConqueGdb_GdbExe="C:/ARM/Toolchain/bin/arm-none-eabi-gdb.exe"
-  end
-  "let g:ConqueTerm_PyVersion=3
-'''
+if = 0
