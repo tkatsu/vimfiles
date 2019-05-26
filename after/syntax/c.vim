@@ -4,6 +4,8 @@ syntax keyword WordError teh
 syntax keyword WordError pirnt
 syntax keyword WordError rutern
 
+syntax keyword type qreal
+
 " function name
 syntax match myFunc /[a-zA-Z_][a-zA-Z_0-9]*\s*(/me=e-1
 "hi myFunc ctermfg=darkgreen guifg=darkgreen
