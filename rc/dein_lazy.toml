@@ -100,7 +100,7 @@ repo = 'honza/vim-snippets'
 
 [[plugins]]
 repo = 'tkatsu/vim-c-snippets'
-depends = ['neosnippet-snippets', 'vim-snippets', 'neocomplete.vim']
+depends = ['neosnippet-snippets', 'vim-snippets', 'neocomplete.vim', 'neosnippet.vim']
 if = 1
 on_ft = ['c']
 hook_source = '''
