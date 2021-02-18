@@ -73,9 +73,29 @@ repo = 'scrooloose/nerdtree'
 if = 0
  
 [[plugins]]
+repo = 'roxma/nvim-yarp'
+
+[[plugins]]
+repo = 'roxma/vim-hug-neovim-rpc'
+
+[[plugins]]
+repo = 'Shougo/deoplete.nvim'
+depends = ['nvim-yarp', 'vim-hug-neovim-rpc']
+on_i = 1
+if = ''' 1 && has("patch-8.2-1066") && (has('nvim') || has('timers')) && has('python3') '''
+hook_source = '''
+  let g:deoplete#enable_at_startup = 1
+'''
+
+[[plugins]]
+repo = 'Shougo/deoplete-clangx'
+depends = ['deoplete.nvim']
+on_i = 1
+
+[[plugins]]
 repo = 'Shougo/neocomplete.vim'
 on_i = 1
-if = ''' 1 && has('lua') '''
+if = ''' 0 && has('lua') && !has("patch-8.2-1066") '''
 hook_source = '''
   let g:neocomplete#enable_at_startup = 1
   if !exists('g:neocomplete#text_mode_filetypes')
@@ -100,7 +120,7 @@ repo = 'honza/vim-snippets'
 
 [[plugins]]
 repo = 'tkatsu/vim-c-snippets'
-depends = ['neosnippet-snippets', 'vim-snippets', 'neocomplete.vim', 'neosnippet.vim']
+depends = ['neosnippet-snippets', 'vim-snippets', 'deoplete.nvim', 'neosnippet']
 if = 1
 on_ft = ['c']
 hook_source = '''
@@ -108,10 +128,10 @@ hook_source = '''
 '''
 
 [[plugins]]
-repo = 'Shougo/neosnippet.vim'
-depends = ['neosnippet-snippets', 'vim-snippets', 'neocomplete.vim']
+repo = 'Shougo/neosnippet'
+depends = ['neosnippet-snippets', 'vim-snippets', 'deoplete.nvim']
 on_i = 1
-if = ''' dein#tap('neocomplete.vim') '''
+if = ''' dein#tap('deoplete.nvim') '''
 hook_source = '''
   " Plugin key-mappings.
   imap <C-k>     <Plug>(neosnippet_expand_or_jump)
@@ -154,21 +174,9 @@ on_ft = ['ruby']
 # オリジナルに対し、不要なダイアログが表示されることへの回避策を追加
 repo = 'tkatsu/vim-clang'
 on_ft = ['c','cpp']
-depends = ['neocomplete.vim', 'syntastic', 'neosnippet.vim']
-if = ''' 0 && dein#tap('neocomplete.vim') '''
+depends = ['syntastic', 'neosnippet']
 hook_source = '''
-  " neocomplete の設定
-  " 'Shougo/neocomplete.vim' {{{
-  if !exists('g:neocomplete#force_omni_input_patterns')
-    let g:neocomplete#force_omni_input_patterns = {}
-  endif
-  let g:neocomplete#force_overwrite_completefunc = 1
-  let g:neocomplete#force_omni_input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-  let g:neocomplete#force_omni_input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-  " }}}
-
   " 'justmao945/vim-clang' {{{
-
   " disable auto completion for vim-clang
   let g:clang_auto = 0
   let g:clang_complete_auto = 0
@@ -253,9 +261,9 @@ hook_source = '''
 
 [[plugins]]
 repo = 'Shougo/neoinclude.vim'
-depends = ['neocomplete.vim']
+depends = ['deoplete.nvim']
 on_i = 1
-if = ''' 1 && dein#tap('neocomplete.vim') '''
+if = ''' 1 && dein#tap('deoplete.nvim') '''
 
 [[plugins]]
 repo = 'tpope/vim-dispatch'
@@ -264,8 +272,8 @@ repo = 'tpope/vim-dispatch'
 #repo = 'OmniSharp/omnisharp-vim'
 #オリジナルに対し、OmniServer がスタートするのを待つことを促すダイアログを追加
 repo = 'tkatsu/omnisharp-vim'
-depends = ['neocomplete.vim', 'syntastic', 'vim-dispatch', 'ultisnips','unite.vim']
-if = ''' 0 && has('python') && !has('unix') && dein#tap('neocomplete.vim') '''
+depends = ['deoplete.nvim', 'syntastic', 'vim-dispatch', 'ultisnips','unite.vim']
+if = ''' 0 && has('python') && !has('unix') && dein#tap('deoplete.nvim') '''
 timeout = 1800
 on_ft = ['cs']
 hook_source = '''
