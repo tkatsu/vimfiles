@@ -88,6 +88,9 @@ repo = 'Shougo/neosnippet-snippets'
 repo = 'ujihisa/neco-look'
 
 [[plugins]]
+repo = 'Shougo/neco-syntax'
+
+[[plugins]]
 repo = 'kana/vim-operator-user'
 
 [[plugins]]
