@@ -170,14 +170,26 @@ vimfiles for Linux and Windows using dein plugin manager.
     と待つ。GVim の再起動を2～3回繰替えし、GVim が スッと立ち上がればイン
     ストールが完了。
 
-   4. vimproc.vim の DLLのコピー  
-     kaoriya で配布している Vim には vimprocのDLLも同梱されているので、それを所定の
-     場所にコピーする。  
+   4. vimproc.vim 用の DLLのコピー  
+     kaoriya で配布している Vim には vimproc用 のDLL vimproc_winXX.dll 
+     も同梱されているので、それを所定の場所にコピーする。  
 
       ```
-      $ cp /c/vim/plugins/vimproc/lib/vimproc_winXX.dll ~/vimfiles/dein/.cache/_vimrc/.dein/lib
+      $ cp /c/vim/plugins/vimproc/lib/vimproc_winXX.dll ~/vimfiles/dein/repos/github.com/Shougo/vimproc.vim/lib/.
       ```
-      ※ XX の部分は OS のビット数 32 か 64 を表わす。
+       ※ XX の部分は OS のビット数 32 か 64 を表わす。
+
+   5. neocomplete.vim が **Vim 8.2.1066以降は非対応** への暫定対策  
+     以下のように表示されたら、
+      ```
+      Vim 8.2.1066 is not backwards compatible.
+      ```
+      neocomplete.vim を commit 0f83788 へバージョンダウンさせる。  
+      例.
+      ```
+      $ cd ~/vimfiles/dein/repos/github.com/Shougo/neocomplete.vim
+      $ git checkout 0f83788
+      ```
 
  - Git for Windows 付属の Vim 用のインストール例  
    Git Bash 上で以下を実行する。  
@@ -206,7 +218,7 @@ vimfiles for Linux and Windows using dein plugin manager.
    ※ vimproc.vim の DLL(vimproc_cygwin.dll) がない為、 vimproc.vim を利用するプラグインには
       非対応。  
 
- - Linux でのインストール例
+ - Linux でのインストール例  
    コマンドラインで以下を実行する。  
 
    1. 既存ファイルのバックアップ  
