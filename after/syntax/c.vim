@@ -186,3 +186,5 @@ syntax keyword itron4Func vxsns_loc
 syntax keyword itron4Func vxsns_dsp
 syntax keyword itron4Func vxsns_dpn
 syntax keyword itron4Func vxsns_tex
+
+source ~/.vim/after/syntax/ifdef.vim
