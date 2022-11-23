@@ -82,7 +82,7 @@ vimfiles for Linux and Windows using dein plugin manager.
      [ここ](https://qiita.com/Fendo181/items/8a5545cd7550bd9a3c91)や
     [ここ](https://qiita.com/SS1031/items/7ee4feb7a18c62bd926f) を参考に Lua付きでビルドすると良い。  
   
-   - Vim-8.2.1066以降では、
+   - Vim-8.2.1978以降では、
      python3 を有効にした Vim を推奨する。これにより補完機能である Shougo さんの
      neocomplete の後継であるdeoplete が機能する。  
      Vim をビルドする場合は、configure にて `--enable-python3interp=yes`を指定する。
