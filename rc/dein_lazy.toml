@@ -82,7 +82,7 @@ repo = 'roxma/vim-hug-neovim-rpc'
 repo = 'Shougo/deoplete.nvim'
 depends = ['nvim-yarp', 'vim-hug-neovim-rpc']
 on_i = 1
-if = ''' 1 && has("patch-8.2-1066") && (has('nvim') || has('timers')) && has('python3') '''
+if = ''' 1 && has("patch-8.2.1066") && (has('nvim') || has('timers')) && has('python3') '''
 hook_source = '''
   let g:deoplete#enable_at_startup = 1
 '''

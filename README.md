@@ -66,19 +66,26 @@ vimfiles for Linux and Windows using dein plugin manager.
    </table>
 
 # 対応 Vim
-  `Lua付き` でビルドされた Vim の利用を推奨する。(:version にて確認)  
-  Lua付きでビルドされていないものは、便利な補完機能関係のプラグインが効かない。
-
  - Windows  
    - [香り屋さんで配布している Vim](https://www.kaoriya.net/software/vim/)
    - `Git For Windows`  に同梱されている Vim
-     (ただし、Luaを必要とするものや、vimproc.vim を利用するプラグインには非対応)
+     (ただし、Luaを必要とするものや、vimproc.vim を利用するプラグインには非対応かも知れない)
 
  - Linux  
-   パッケージに含まれる Vim。  
-   尚、パッケージ版だと `Luaなし`でビルドされている場合が多いので、
-   その際は自分で `Lua付き`の Vim を [ここ](https://qiita.com/Fendo181/items/8a5545cd7550bd9a3c91)や
-   [ここ](https://qiita.com/SS1031/items/7ee4feb7a18c62bd926f) を参考にビルドするのが良い。
+   パッケージに含まれる Vim で基本的にはOK。  
+
+ - 補完機能について  
+   - Vim-8.2.1065 以前のバージョンでは、Shougo さん作の便利な補完機能である
+     neocompleteプラグインを有効化する為、`Lua付き` でビルドされた Vim の利用を推奨する。  
+     `Lua付き` かどうかは `:version` にて確認できる。  
+     `Lua付き`でビルドされていない場合は、
+     [ここ](https://qiita.com/Fendo181/items/8a5545cd7550bd9a3c91)や
+    [ここ](https://qiita.com/SS1031/items/7ee4feb7a18c62bd926f) を参考に Lua付きでビルドすると良い。  
+  
+   - Vim-8.2.1066以降では、
+     python3 を有効にした Vim を推奨する。これにより補完機能である Shougo さんの
+     neocomplete の後継であるdeoplete が機能する。  
+     Vim をビルドする場合は、configure にて `--enable-python3interp=yes`を指定する。
 
 # Vim 以外に必要なもの
  - Git  
@@ -104,7 +111,7 @@ vimfiles for Linux and Windows using dein plugin manager.
  - 外部ツール  
    利用するプラグインにより、以下の外部ツールを必要とする。  
 
-        bc, ctags, indent, look, words, pt
+        bc, ctags, indent, look, words, pt(Windows時)
 
    これらは、なくても、そのツールを利用するプラグインが動作しないだけで、とり敢えず問題はない。  
 
@@ -179,6 +186,8 @@ vimfiles for Linux and Windows using dein plugin manager.
       ```
        ※ XX の部分は OS のビット数 32 か 64 を表わす。
 
+    Linux においては Vim 上で `:VimProcInstall` を実行すれば良い。
+
    5. neocomplete.vim が **Vim 8.2.1066以降は非対応** への暫定対策  
      以下のように表示されたら、
       ```
@@ -190,7 +199,6 @@ vimfiles for Linux and Windows using dein plugin manager.
       $ cd ~/vimfiles/dein/repos/github.com/Shougo/neocomplete.vim
       $ git checkout 0f83788
       ```
-
  - Git for Windows 付属の Vim 用のインストール例  
    Git Bash 上で以下を実行する。  
    ※ フォルダ名、ファイルの先頭の `_`と `.` の違いに注意!
@@ -254,6 +262,17 @@ vimfiles for Linux and Windows using dein plugin manager.
       $ sudo git clone https://github.com/koron/vim-kaoriya.git
       $ sudo git clone https://github.com/vim-jp/vimdoc-ja.git
       ```
+
+   5. Shougoさんの deoplete plugin による入力補完  
+     Vim-9.0 においては、python3 を有効にして Vim をビルドする。  
+     ```
+     $ ./configre --enable-python3interp=yes ...  
+     ```
+     pynvim をインストールする  
+     ```
+     $ pip3 install pynvim
+     ```
+
 
   ※ 最初の Vim 実行時、`~/.vimbackup`  というディレクトリが自動的に作られる。
   ここにバックアップファイルなどの一時ファイルが保存される。
