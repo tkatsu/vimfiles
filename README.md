@@ -255,6 +255,16 @@ vimfiles for Linux and Windows using dein plugin manager.
       $ sudo git clone https://github.com/vim-jp/vimdoc-ja.git
       ```
 
+   5. Shougoさんの deoplete plugin による入力補完  
+     Vim-8.2.1978以降においては、python3 を有効にして Vim をビルドする。  
+     ```
+     $ ./configre --enable-python3interp=yes ...  
+     ```
+     pynvim をインストールする。  
+     ```
+     $ pip3 install pynvim
+     ```
+
   ※ 最初の Vim 実行時、`~/.vimbackup`  というディレクトリが自動的に作られる。
   ここにバックアップファイルなどの一時ファイルが保存される。
 
