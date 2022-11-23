@@ -264,11 +264,11 @@ vimfiles for Linux and Windows using dein plugin manager.
       ```
 
    5. Shougoさんの deoplete plugin による入力補完  
-     Vim-9.0 においては、python3 を有効にして Vim をビルドする。  
+     Vim-8.2.1978以降においては、python3 を有効にして Vim をビルドする。  
      ```
      $ ./configre --enable-python3interp=yes ...  
      ```
-     pynvim をインストールする  
+     pynvim をインストールする。  
      ```
      $ pip3 install pynvim
      ```
