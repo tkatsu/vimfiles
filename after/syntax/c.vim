@@ -187,4 +187,9 @@ syntax keyword itron4Func vxsns_dsp
 syntax keyword itron4Func vxsns_dpn
 syntax keyword itron4Func vxsns_tex
 
-source ~/.vim/after/syntax/ifdef.vim
+if has('win32') || has('win64')
+  source ~/vimfiles/after/syntax/ifdef.vim
+else
+  source ~/.vim/after/syntax/ifdef.vim
+endif
+
